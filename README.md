@@ -38,7 +38,7 @@ docker run --name mongo-instance -p 27017:27017 -d mongo
 cd api
 python3 pyapi.py
 ```
-- Open another Terminal and execute the tests
+- Open another terminal and execute the tests
 ```
 cd api/tests
 python3 -m unittest -v

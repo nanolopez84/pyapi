@@ -33,8 +33,13 @@ DELETE  http://127.0.0.1:5000/api/v1/candidate/<candidateId>
 ```
 docker run --name mongo-instance -p 27017:27017 -d mongo
 ```
-- Execute the tests
+- Start the API
+```
+cd api
+python3 pyapi.py
+```
+- Open another Terminal and execute the tests
 ```
 cd api/tests
-python -m unittest -v
+python3 -m unittest -v
 ```

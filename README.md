@@ -44,7 +44,7 @@ python3 pyapi.py
 ```
 - Open another terminal and execute the tests
 ```
-cd api/tests
-python3 -m unittest -v
+cd api
+python3 -m unittest discover -v
 ```
 

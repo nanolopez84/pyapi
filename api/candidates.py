@@ -24,7 +24,7 @@ def getCandidates():
     global db
     return list(db.candidates.find())
 
-def init(name='candidatesDB'):
+def init(name='candidatesDB'): # pragma: no cover
     global db
     global gClient
     global gName

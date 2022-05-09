@@ -2,9 +2,6 @@ import unittest
 import uuid
 from pprint import pprint
 
-import sys
-sys.path.append('../')
-
 import candidates
 
 class TestService(unittest.TestCase):

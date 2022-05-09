@@ -6,6 +6,11 @@
 https://docs.docker.com/engine/install/
 - Install Python3
 https://www.python.org/downloads/
+- Install Python dependencies
+```
+cd api
+pip3 install -r requirements.txt
+```
 
 ## How to Run
 ### API
@@ -15,12 +20,12 @@ docker run --name mongo-instance -p 27017:27017 -d mongo
 ```
 - Start the Python/Flask API service
 ```
-cd api
 python3 pyapi.py
 ```
 
 - Try these endpoints with a REST client (cURL, Postman, etc)
 _You may import the `pyapi.postman_collection.json` file into Postman_
+_In Postman, set the {{base_url}} variable to http://127.0.0.1:5000/api/v1_
 ```
 POST    http://127.0.0.1:5000/api/v1/candidate {"name": "John"}
 GET     http://127.0.0.1:5000/api/v1/candidates
@@ -35,7 +40,6 @@ docker run --name mongo-instance -p 27017:27017 -d mongo
 ```
 - Start the API
 ```
-cd api
 python3 pyapi.py
 ```
 - Open another terminal and execute the tests
@@ -43,3 +47,4 @@ python3 pyapi.py
 cd api/tests
 python3 -m unittest -v
 ```
+

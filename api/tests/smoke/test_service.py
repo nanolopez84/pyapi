@@ -12,6 +12,7 @@ class TestService(unittest.TestCase):
 
     def tearDown(self):
         candidates.dropDatabase()
+        candidates.close()
 
     def test_create_candidate(self):
         candidate = {'name': 'John'}

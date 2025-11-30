@@ -71,6 +71,11 @@ def updateCandidate(candidateId):
         return '', 404
 
 # Main -------------------------------------------------------------------------
+try:
+    candidates.init()
+    app.run(debug = 'APP_DEBUG' in os.environ)
+except Exception as e:
+    print(e)
+finally:
+    candidates.close()
 
-candidates.init()
-app.run(debug = 'APP_DEBUG' in os.environ)

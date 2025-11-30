@@ -40,3 +40,6 @@ def updateCandidate(candidate):
 
     # Do not mind if data was modified, just evaluate matched _id
     return res.matched_count == 1
+
+def close():
+    gClient.close()

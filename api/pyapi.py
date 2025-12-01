@@ -27,14 +27,12 @@ def encodeId(obj):
 candidates_service = None
 
 # Create a new candidate
-create_candidate_schema = CreateCandidateSchema()
-
 @app.route(BASE_URL + '/candidate', methods=['POST'])
 def create_candidate():
-    global create_candidate_schema
     global candidates_service
 
     candidate = request.get_json()
+    create_candidate_schema = CreateCandidateSchema()
     errors = create_candidate_schema.validate(candidate)
     if errors:
         return make_response(str(errors), 400)
@@ -72,13 +70,12 @@ def get_candidate(candidate_id):
     return decodeId(candidate)
 
 # Update candidate
-update_candidate_schema = UpdateCandidateSchema()
 
 @app.route(BASE_URL + '/candidate/<candidate_id>', methods=['PATCH'])
 def update_candidate(candidate_id):
-    global update_candidate_schema
     global candidates_service
 
+    update_candidate_schema = UpdateCandidateSchema()
     candidate = candidates_service.get_candidate(candidate_id)
 
     if candidate is None:

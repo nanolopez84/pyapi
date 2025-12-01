@@ -1,10 +1,49 @@
 {
 	"info": {
-		"_postman_id": "d847598c-9c3c-481a-978d-132cb80d034e",
+		"_postman_id": "8414f85b-5716-466a-8b96-cb39d8c5831b",
 		"name": "pyapi",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "candidate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set('candidateId', pm.response.json()._id);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"JOOohnas\",\r\n    \"age\": 48\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/candidate",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"candidate"
+					]
+				}
+			},
+			"response": []
+		},
 		{
 			"name": "candidates",
 			"request": {
@@ -25,29 +64,11 @@
 		{
 			"name": "candidate",
 			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/candidate/{{candidateId}}",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"candidate",
-						"{{candidateId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "candidate",
-			"request": {
 				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"_id\": \"{{candidateId}}\",\r\n    \"name\": \"Johnatan\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Johnatan2\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -55,13 +76,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/candidate/{{candidateId}}",
+					"raw": "{{base_url}}/candidate/{{candidate_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"candidate",
-						"{{candidateId}}"
+						"{{candidate_id}}"
 					]
 				}
 			},
@@ -69,36 +90,17 @@
 		},
 		{
 			"name": "candidate",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.globals.set('candidateId', pm.response.json()._id);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
 			"request": {
-				"method": "POST",
+				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"John\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "{{base_url}}/candidate",
+					"raw": "{{base_url}}/candidate/{{candidate_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
-						"candidate"
+						"candidate",
+						"{{candidate_id}}"
 					]
 				}
 			},

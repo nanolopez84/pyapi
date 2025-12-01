@@ -1,4 +1,5 @@
 import os
+import pymongo
 from flask import Flask, request, make_response, jsonify
 from marshmallow import Schema, fields
 from bson import ObjectId
@@ -99,7 +100,8 @@ def update_candidate(candidate_id):
 def main():
     global candidates_service
 
-    candidates_service = CandidatesService()
+    mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+    candidates_service = CandidatesService('candidatesDB', mongo_client)
     app.run(debug = 'APP_DEBUG' in os.environ)
 
 if __name__ == '__main__':

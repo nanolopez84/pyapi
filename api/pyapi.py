@@ -1,4 +1,5 @@
 import os
+import sys
 import pymongo
 from flask import Flask, request, make_response, jsonify
 from marshmallow import Schema, fields
@@ -97,8 +98,10 @@ def update_candidate(candidate_id):
 def main():
     global candidates_service
 
+    db_name = sys.argv[1] if len(sys.argv) > 1 else 'candidatesDB'
+
     mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
-    candidates_service = CandidatesService('candidatesDB', mongo_client)
+    candidates_service = CandidatesService(db_name, mongo_client)
     app.run(debug = 'APP_DEBUG' in os.environ)
 
 if __name__ == '__main__':

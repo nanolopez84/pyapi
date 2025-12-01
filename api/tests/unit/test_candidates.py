@@ -1,7 +1,9 @@
 import unittest
+import uuid
+from bson import ObjectId
 from unittest.mock import MagicMock
 
-import candidates
+from candidates_service import CandidatesService
 
 class TestCandidates(unittest.TestCase):
 
@@ -9,30 +11,31 @@ class TestCandidates(unittest.TestCase):
         candidate['_id'] = 1
 
     def setUp(self):
-        candidates.db = MagicMock()
-        candidates.gClient = MagicMock()
-        candidates.gName = 'dbase-name'
+        self.candidates_service = CandidatesService('test-' + str(uuid.uuid1())[:8], MagicMock())
+
+    def tearDown(self):
+        self.candidates_service._client.close()
     
     def test_createCandidate(self):
-        candidates.db.candidates.insert_one.side_effect = self.side_effect_createCandidate
-        newCandidate = candidates.createCandidate({'name': 'Jhon'})
+        self.candidates_service._db.candidates.insert_one.side_effect = self.side_effect_createCandidate
+        newCandidate = self.candidates_service.create_candidate({'name': 'Jhon'})
         self.assertIn('_id', newCandidate)
 
     def test_deleteCandidate(self):
-        candidates.deleteCandidate(1)
-        candidates.db.candidates.delete_one.assert_called_once()
+        self.candidates_service.delete_candidate(ObjectId())
+        self.candidates_service._db.candidates.delete_one.assert_called_once()
 
     def test_dropDatabase(self):
-        candidates.dropDatabase()
-        candidates.gClient.drop_database.assert_called_with(candidates.gName)
+        self.candidates_service.drop_database()
+        self.candidates_service._client.drop_database.assert_called_with(self.candidates_service._name)
 
     def test_getCandidates(self):
-        r = candidates.getCandidates()
+        r = self.candidates_service.get_candidates()
         self.assertIsInstance(r, list)
 
     def test_updateCandidate(self):
         res = MagicMock()
         res.matched_count = 1
-        candidates.db.candidates.update_one.return_value = res
-        r = candidates.updateCandidate({'_id': 1})
+        self.candidates_service._db.candidates.update_one.return_value = res
+        r = self.candidates_service.update_candidate({'_id': ObjectId()})
         self.assertTrue(r)

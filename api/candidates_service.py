@@ -3,15 +3,10 @@ from bson import ObjectId
 from pprint import pprint
 
 class CandidatesService:
-    def __init__(self, name='candidatesDB'):
+    def __init__(self, name, client):
         self._name = name
-        self._client = pymongo.MongoClient("mongodb://localhost:27017/")
+        self._client = client
         self._db = self._client[self._name]
-
-    '''
-    def __del__():
-        self._client.close()
-    '''
 
     def create_candidate(self, candidate):
         self._db.candidates.insert_one(candidate)

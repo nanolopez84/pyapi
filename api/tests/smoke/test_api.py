@@ -8,13 +8,13 @@ BASE_URL = 'http://localhost:5000/api/' + VERSION
 class TestApi(unittest.TestCase):
 
     def test_create_candidate(self):
-        candidate = {'name': 'John'}
+        candidate = {'name': 'John', 'age': 35}
         r = requests.post(BASE_URL + '/candidate', json=candidate)
         self.assertEqual(r.status_code, 201, 'Should create a candidate')
         self.assertIn('_id', r.json(), 'New candidate should have _id')
 
     def test_delete_candidate(self):
-        candidate = {'name': 'John'}
+        candidate = {'name': 'John', 'age': 35}
         r = requests.post(BASE_URL + '/candidate', json=candidate)
         candidate = r.json()
 
@@ -36,17 +36,19 @@ class TestApi(unittest.TestCase):
         self.assertEqual(r.status_code, 200, 'Should get all candidates')
 
     def test_update_candidate(self):
-        candidate = {'name': 'John'}
+        candidate = {'name': 'John', 'age': 35}
         r = requests.post(BASE_URL + '/candidate', json=candidate)
         candidate = r.json()
 
+        candidate_id = candidate['_id']
         candidate['name'] = 'Jonathan'
-        r = requests.patch(BASE_URL + '/candidate/' + str(candidate['_id']), json=candidate)
+        del candidate['_id']
+        r = requests.patch(BASE_URL + '/candidate/' + candidate_id, json=candidate)
         self.assertEqual(r.status_code, 200, 'Should find the candidate')
 
         r = requests.get(BASE_URL + '/candidates')
         allCandidates = r.json()
-        fetchedCandidate = next(c for c in allCandidates if c['_id'] == candidate['_id'])
+        fetchedCandidate = next(c for c in allCandidates if c['_id'] == candidate_id)
         self.assertEqual(fetchedCandidate['name'], candidate['name'], 'Should update the candidate')
 
 if __name__ == '__main__':

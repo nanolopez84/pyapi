@@ -1,29 +1,30 @@
+import pymongo
 import unittest
 import uuid
 from pprint import pprint
 
-import candidates
+from candidates_service import CandidatesService
 
 class TestService(unittest.TestCase):
 
     def setUp(self):
-        tmpName = 'test-' + str(uuid.uuid1())[:8]
-        candidates.init(tmpName)
+        mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+        temp_name = 'test-' + str(uuid.uuid1())[:8]
+        self.candidates_service = CandidatesService(temp_name, mongo_client)
 
     def tearDown(self):
-        candidates.dropDatabase()
-        candidates.close()
+        self.candidates_service.drop_database()
 
     def test_create_candidate(self):
         candidate = {'name': 'John'}
-        candidates.createCandidate(candidate)
+        self.candidates_service.create_candidate(candidate)
         self.assertIn('_id', candidate, 'New candidate should have _id')
 
     def test_delete_candidate(self):
         candidate = {'name': 'John'}
-        candidates.createCandidate(candidate)
-        candidates.deleteCandidate(candidate['_id'])
-        allCandidates = candidates.getCandidates()
+        self.candidates_service.create_candidate(candidate)
+        self.candidates_service.delete_candidate(candidate['_id'])
+        allCandidates = self.candidates_service.get_candidates()
         result = False
         try:
             fetchedCandidate = next(c for c in allCandidates if c['_id'] == candidate['_id'])
@@ -32,15 +33,15 @@ class TestService(unittest.TestCase):
         self.assertEqual(result, True, 'Should delete the candidate')
 
     def test_get_candidates(self):
-        allCandidates = candidates.getCandidates()
+        allCandidates = self.candidates_service.get_candidates()
         self.assertIsInstance(allCandidates, list, 'Should get all candidates')
 
     def test_update_candidate(self):
-        candidate = {'name': 'John'}
-        candidates.createCandidate(candidate)
+        candidate = {'name': 'John', 'age': 40}
+        self.candidates_service.create_candidate(candidate)
         candidate['name'] = 'Jonathan'
-        candidates.updateCandidate(candidate)
-        allCandidates = candidates.getCandidates()
+        self.candidates_service.update_candidate(candidate)
+        allCandidates = self.candidates_service.get_candidates()
         fetchedCandidate = next(c for c in allCandidates if c['_id'] == candidate['_id'])
         self.assertEqual(fetchedCandidate['name'], candidate['name'], 'Should update the candidate')
 

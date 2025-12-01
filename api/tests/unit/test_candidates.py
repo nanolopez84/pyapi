@@ -11,7 +11,8 @@ class TestCandidates(unittest.TestCase):
         candidate['_id'] = 1
 
     def setUp(self):
-        self.candidates_service = CandidatesService('test-' + str(uuid.uuid1())[:8], MagicMock())
+        temp_name = 'test-' + str(uuid.uuid1())[:8]
+        self.candidates_service = CandidatesService(temp_name, MagicMock())
 
     def tearDown(self):
         self.candidates_service._client.close()

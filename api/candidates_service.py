@@ -1,4 +1,3 @@
-import pymongo
 from bson import ObjectId
 from pprint import pprint
 
@@ -7,6 +6,9 @@ class CandidatesService:
         self._name = name
         self._client = client
         self._db = self._client[self._name]
+
+    def __del__(self):
+        self._client.close()
 
     def create_candidate(self, candidate):
         self._db.candidates.insert_one(candidate)
